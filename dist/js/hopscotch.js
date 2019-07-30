@@ -1127,7 +1127,17 @@
 
       //Finally, append our new bubble to body once the DOM is ready.
       if (utils.documentIsReady()) {
-        if (document.querySelector('nd-brand-bar')) {
+        if (!!this.opt.appendTo) {
+          this.opt.appendTo.appendChild(el);
+          window.setTimeout(function () {
+            if (el.style.position !== 'fixed') {
+              var newBubbleTop = parseInt(this.opt.target.offsetTop);
+              var newBubbleLeft = parseInt(this.opt.target.offsetLeft);
+              el.style.top = this.opt.target.getBoundingClientRect().height + newBubbleTop + 10 + 'px';
+              el.style.left = newBubbleLeft + 'px';
+            }
+          }.bind(this), 100);
+        } else if (document.querySelector('nd-brand-bar')) {
           document.querySelector('[slot=main]').appendChild(el);
           window.setTimeout(function () {
             if (el.style.position !== 'fixed') {
