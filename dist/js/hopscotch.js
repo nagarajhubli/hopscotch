@@ -1131,10 +1131,17 @@
           this.opt.appendTo.appendChild(el);
           window.setTimeout(function () {
             if (el.style.position !== 'fixed') {
-              var newBubbleTop = parseInt(this.opt.target.offsetTop);
-              var newBubbleLeft = parseInt(this.opt.target.offsetLeft);
-              el.style.top = this.opt.target.getBoundingClientRect().height + newBubbleTop + 10 + 'px';
-              el.style.left = newBubbleLeft + 'px';
+              var appendToElementCoords = this.opt.appendTo.getBoundingClientRect();
+              var targetElementCoords = this.opt.target.getBoundingClientRect();
+
+              var newBubbleTop = parseInt(targetElementCoords.top - appendToElementCoords.top);
+              var newBubbleLeft = parseInt(targetElementCoords.left - appendToElementCoords.left);
+
+              var yOffset = !!this.opt.yOffset ? this.opt.yOffset : 0;
+              var xOffset = !!this.opt.xOffset ? this.opt.xOffset : 0;
+
+              el.style.top = this.opt.appendTo.scrollTop + newBubbleTop + targetElementCoords.height + 10 + yOffset + 'px';
+              el.style.left = this.opt.appendTo.scrollLeft + newBubbleLeft + xOffset + 'px';
             }
           }.bind(this), 100);
         } else if (document.querySelector('nd-brand-bar')) {
